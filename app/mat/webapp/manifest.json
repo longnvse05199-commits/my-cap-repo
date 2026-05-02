@@ -1,0 +1,59 @@
+{
+  "_version": "1.58.0",
+  "sap.app": {
+    "id": "sap.mm.material",
+    "type": "application",
+    "title": "Quản Lý Vật Tư",
+    "description": "SAP MM Material Management",
+    "applicationVersion": { "version": "1.0.0" },
+    "dataSources": {
+      "MaterialService": {
+        "uri": "/odata/v4/material/",
+        "type": "OData",
+        "settings": { "odataVersion": "4.0" }
+      }
+    }
+  },
+  "sap.ui": { "technology": "UI5", "fullWidth": false },
+  "sap.ui5": {
+    "rootView": { "viewName": "sap.mm.material.view.App", "type": "XML", "id": "app" },
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": { "sap.ui.core": {}, "sap.m": {}, "sap.f": {}, "sap.uxap": {}, "sap.ui.layout": {} }
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": { "bundleName": "sap.mm.material.i18n.i18n" }
+      },
+      "materialData": {
+        "dataSource": "MaterialService",
+        "preload": true,
+        "settings": { "synchronizationMode": "None", "operationMode": "Server" }
+      },
+      "dropdowns": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/dropdowns.json"
+      }
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "viewPath": "sap.mm.material.view",
+        "controlId": "appNav",
+        "controlAggregation": "pages"
+      },
+      "routes": [
+        { "name": "MaterialList",   "pattern": "",                   "target": ["MaterialList"]   },
+        { "name": "CreateMaterial", "pattern": "create",             "target": ["CreateMaterial"] },
+        { "name": "MaterialDetail", "pattern": "detail/{materialId}", "target": ["MaterialDetail"] }
+      ],
+      "targets": {
+        "MaterialList":   { "viewName": "MaterialList",   "viewId": "MaterialList"   },
+        "CreateMaterial": { "viewName": "CreateMaterial", "viewId": "CreateMaterial" },
+        "MaterialDetail": { "viewName": "MaterialDetail", "viewId": "MaterialDetail" }
+      }
+    }
+  }
+}

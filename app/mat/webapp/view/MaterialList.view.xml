@@ -1,0 +1,83 @@
+<mvc:View
+  controllerName="sap.mm.material.controller.MaterialList"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core">
+
+  <Page id="materialListPage" showNavButton="false" title="Quản Lý Vật Tư">
+
+    <headerContent>
+      <Button text="Thống Kê" icon="sap-icon://pie-chart" press=".onShowStats" />
+      <Button text="Tạo Vật Liệu" type="Emphasized" icon="sap-icon://add" press=".onCreateMaterial" />
+    </headerContent>
+
+    <subHeader>
+      <Bar>
+        <contentLeft>
+          <SearchField id="searchField" placeholder="Tìm theo số hoặc mô tả..." width="300px"
+            search=".onSearch" liveChange=".onSearch" />
+        </contentLeft>
+        <contentRight>
+          <Select id="filterMaterialType" width="200px" change=".onFilterType" selectedKey="">
+            <items>
+              <core:Item key="" text="-- Tất cả loại --" />
+              <core:Item key="ROH"  text="ROH - Nguyên liệu thô" />
+              <core:Item key="HALB" text="HALB - Bán thành phẩm" />
+              <core:Item key="FERT" text="FERT - Thành phẩm" />
+              <core:Item key="VERP" text="VERP - Bao bì" />
+            </items>
+          </Select>
+          <Button icon="sap-icon://refresh" press=".onRefresh" tooltip="Làm mới" />
+        </contentRight>
+      </Bar>
+    </subHeader>
+
+    <content>
+      <Table id="materialTable"
+        items="{materialData>/Materials}"
+        growing="true"
+        growingThreshold="20"
+        noDataText="Không có vật liệu.">
+
+        <columns>
+          <Column width="15%"><Text text="Số Vật Liệu" /></Column>
+          <Column><Text text="Mô Tả" /></Column>
+          <Column width="12%" hAlign="Center"><Text text="Loại VL" /></Column>
+          <Column width="7%"  hAlign="Center"><Text text="ĐVT" /></Column>
+          <Column width="14%" hAlign="Right"><Text text="Giá (VND)" /></Column>
+          <Column width="10%" hAlign="Center"><Text text="Trạng Thái" /></Column>
+        </columns>
+
+        <items>
+          <ColumnListItem type="Navigation" press=".onMaterialPress">
+            <cells>
+              <ObjectIdentifier title="{materialData>MaterialNumber}" />
+              <Text text="{materialData>MaterialDescription}" />
+              <ObjectStatus
+                text="{materialData>MaterialTypeText}"
+                state="{path: 'materialData>MaterialType', formatter: '.formatter.materialTypeState'}" />
+              <Text text="{materialData>BaseUnitOfMeasure}" />
+              <ObjectNumber
+                number="{materialData>MovingAveragePrice}"
+                unit="{materialData>Currency}" />
+              <ObjectStatus
+                text="{materialData>Status}"
+                state="{path: 'materialData>Status', formatter: '.formatter.statusState'}"
+                inverted="true" />
+            </cells>
+          </ColumnListItem>
+        </items>
+
+      </Table>
+    </content>
+
+    <footer>
+      <Toolbar>
+        <ToolbarSpacer />
+        <Button text="Quay lại Launchpad" icon="sap-icon://home"
+          press=".onNavToLaunchpad" />
+      </Toolbar>
+    </footer>
+
+  </Page>
+</mvc:View>

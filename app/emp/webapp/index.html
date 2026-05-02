@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Management</title>
+
+  <!-- Load SAPUI5 từ CDN SAP -->
+  <!-- theme=sap_horizon: giao diện SAP hiện đại nhất (2023+) -->
+  <script
+    id="sap-ui-bootstrap"
+    src="https://ui5.sap.com/resources/sap-ui-core.js"
+    data-sap-ui-theme="sap_horizon"
+    data-sap-ui-libs="sap.m,sap.ui.layout,sap.ui.core"
+    data-sap-ui-compatVersion="edge"
+    data-sap-ui-async="true"
+    data-sap-ui-preload=""
+    data-sap-ui-resourceroots='{"com.company.employeemanagement": "./"}'
+    data-sap-ui-oninit="module:sap/ui/core/ComponentSupport">
+  </script>
+</head>
+<body class="sapUiBody" id="content">
+  <!-- SAP ComponentSupport tự load Component.js dựa theo data-sap-ui-component -->
+  <div
+    data-sap-ui-component
+    data-name="com.company.employeemanagement"
+    data-id="container"
+    data-settings='{"id" : "employeeManagement"}'
+    style="height: 100%">
+  </div>
+</body>
+</html>

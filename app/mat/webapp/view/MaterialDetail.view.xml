@@ -1,0 +1,63 @@
+<mvc:View
+  controllerName="sap.mm.material.controller.MaterialDetail"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:f="sap.ui.layout.form"
+  xmlns:core="sap.ui.core">
+
+  <Page id="materialDetailPage" showNavButton="true" navButtonPress=".onNavBack"
+    title="{detailModel>/MaterialDescription}">
+
+    <headerContent>
+      <Button text="Nhân Bản"      icon="sap-icon://copy"          press=".onDuplicate"     />
+      <Button text="Đổi TT"        icon="sap-icon://status-change" press=".onChangeStatus"  />
+      <Button text="Xóa"           icon="sap-icon://delete"        type="Negative" press=".onDelete" />
+      <Button text="Launchpad"     icon="sap-icon://home"          press=".onNavToLaunchpad" />
+    </headerContent>
+
+    <content>
+      <f:SimpleForm layout="ResponsiveGridLayout"
+        columnsXL="2" columnsL="2" columnsM="1"
+        labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+        title="Chi Tiết Vật Liệu" editable="false">
+
+        <Label text="Số Vật Liệu" />
+        <ObjectStatus text="{detailModel>/MaterialNumber}" state="Information" />
+
+        <Label text="Mô Tả" />
+        <Text text="{detailModel>/MaterialDescription}" />
+
+        <Label text="Loại Vật Liệu" />
+        <Text text="{detailModel>/MaterialTypeText}" />
+
+        <Label text="Đơn Vị Tính" />
+        <Text text="{detailModel>/BaseUnitOfMeasure}" />
+
+        <Label text="Nhóm Vật Liệu" />
+        <Text text="{detailModel>/MaterialGroup}" />
+
+        <Label text="Nhà Máy" />
+        <Text text="{detailModel>/Plant}" />
+
+        <Label text="Giá Trung Bình (MAP)" />
+        <ObjectNumber
+          number="{detailModel>/MovingAveragePrice}"
+          unit="{detailModel>/Currency}"
+          state="Success" emphasized="true" />
+
+        <Label text="Trạng Thái" />
+        <ObjectStatus
+          text="{detailModel>/Status}"
+          state="{= ${detailModel>/Status} === 'Active' ? 'Success' : 'Error'}"
+          inverted="true" />
+
+        <Label text="Ngày Tạo" />
+        <Text text="{detailModel>/CreatedOn}" />
+
+        <Label text="Người Tạo" />
+        <Text text="{detailModel>/CreatedBy}" />
+
+      </f:SimpleForm>
+    </content>
+  </Page>
+</mvc:View>

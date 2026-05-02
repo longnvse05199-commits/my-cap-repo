@@ -1,0 +1,20 @@
+{
+  "MaterialTypes": [
+    { "Key": "ROH",  "Text": "ROH - Nguyên vật liệu thô" },
+    { "Key": "HALB", "Text": "HALB - Bán thành phẩm" },
+    { "Key": "FERT", "Text": "FERT - Thành phẩm" },
+    { "Key": "VERP", "Text": "VERP - Bao bì đóng gói" },
+    { "Key": "HIBE", "Text": "HIBE - Công cụ dụng cụ" },
+    { "Key": "NLAG", "Text": "NLAG - Vật liệu không lưu kho" }
+  ],
+  "UnitsOfMeasure": [
+    { "Key": "PC",  "Text": "PC - Cái/Chiếc" },
+    { "Key": "KG",  "Text": "KG - Kilogram" },
+    { "Key": "G",   "Text": "G - Gram" },
+    { "Key": "T",   "Text": "T - Tấn" },
+    { "Key": "M",   "Text": "M - Mét" },
+    { "Key": "M2",  "Text": "M2 - Mét vuông" },
+    { "Key": "L",   "Text": "L - Lít" },
+    { "Key": "EA",  "Text": "EA - Đơn vị" }
+  ]
+}

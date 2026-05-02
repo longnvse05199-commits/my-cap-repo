@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Long Fiori Demo</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "72", "72full", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #eef2f8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    .flp-header {
+      background: #1d2d3e;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      gap: .75rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,.35);
+      flex-shrink: 0;
+    }
+
+    .flp-header-logo {
+      width: 28px; height: 28px;
+      background: #0070f2;
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .flp-header-logo svg { width: 18px; height: 18px; fill: white; }
+
+    .flp-header-title {
+      color: #fff;
+      font-size: .9375rem;
+      font-weight: 500;
+      flex: 1;
+    }
+
+    .flp-header-user {
+      display: flex; align-items: center; gap: .5rem;
+      color: #b0c4d8; font-size: .75rem; cursor: pointer;
+    }
+
+    .flp-header-avatar {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0070f2, #004ea8);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: .6875rem; font-weight: 700;
+      letter-spacing: .03em;
+    }
+
+    /* ── SUB-HEADER ── */
+    .flp-subheader {
+      background: #fff;
+      border-bottom: 1px solid #dde5ef;
+      padding: .5rem 2rem;
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .8125rem; color: #6e8198;
+    }
+
+    .flp-subheader svg { width: 14px; height: 14px; opacity: .6; }
+
+    /* ── CONTENT ── */
+    .flp-body {
+      flex: 1;
+      padding: 2rem 2.5rem;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* ── SECTION ── */
+    .flp-group {
+      margin-bottom: 2rem;
+    }
+
+    .flp-group-header {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .flp-group-title {
+      font-size: .75rem;
+      font-weight: 700;
+      color: #5a7a96;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      white-space: nowrap;
+    }
+
+    .flp-group-line {
+      flex: 1; height: 1px;
+      background: linear-gradient(to right, #c8d8e8, transparent);
+    }
+
+    /* ── TILES ── */
+    .flp-tiles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+    }
+
+    .flp-tile {
+      width: 190px;
+      height: 190px;
+      border-radius: 14px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.375rem 1.25rem 1.25rem;
+      text-decoration: none;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      transition: transform .18s cubic-bezier(.34,1.56,.64,1),
+                  box-shadow .18s ease;
+      box-shadow: 0 4px 14px rgba(0,0,0,.12);
+    }
+
+    .flp-tile:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 16px 36px rgba(0,0,0,.18);
+    }
+
+    .flp-tile:active { transform: translateY(-2px) scale(1); }
+
+    /* Decorative circles */
+    .flp-tile::before {
+      content: '';
+      position: absolute;
+      top: -28px; right: -28px;
+      width: 110px; height: 110px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.1);
+    }
+    .flp-tile::after {
+      content: '';
+      position: absolute;
+      bottom: -18px; right: 16px;
+      width: 75px; height: 75px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.06);
+    }
+
+    /* Tile colors */
+    .tile-emp      { background: linear-gradient(145deg, #1a73e8 0%, #0040a0 100%); }
+    .tile-leave    { background: linear-gradient(145deg, #1a9e5e 0%, #0b5e38 100%); }
+    .tile-mat      { background: linear-gradient(145deg, #f07800 0%, #b34f00 100%); }
+    .tile-approval { background: linear-gradient(145deg, #7b1fa2 0%, #4a0072 100%); }
+
+    /* Icon wrapper */
+    .flp-tile-icon {
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.18);
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(4px);
+      flex-shrink: 0;
+      z-index: 1;
+    }
+
+    .flp-tile-icon svg { width: 28px; height: 28px; stroke: #fff; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* Text */
+    .flp-tile-text { z-index: 1; }
+
+    .flp-tile-title {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: .3rem;
+    }
+
+    .flp-tile-sub {
+      font-size: .75rem;
+      opacity: .78;
+      font-weight: 400;
+    }
+
+    /* Badge */
+    .flp-tile-badge {
+      position: absolute;
+      top: .875rem; right: .875rem;
+      background: rgba(255,255,255,.22);
+      border-radius: 20px;
+      padding: .15rem .55rem;
+      font-size: .6875rem;
+      font-weight: 600;
+      z-index: 1;
+    }
+
+    /* ── QUICK STATS ── */
+    .flp-stats {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .flp-stat {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      border-left: 4px solid;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+      min-width: 160px;
+      flex: 1;
+    }
+
+    .flp-stat.blue  { border-color: #0070f2; }
+    .flp-stat.green { border-color: #107e3e; }
+    .flp-stat.orange{ border-color: #e76500; }
+    .flp-stat.purple{ border-color: #6a1b9a; }
+
+    .flp-stat-num {
+      font-size: 1.75rem; font-weight: 700; color: #1d2d3e; line-height: 1;
+    }
+
+    .flp-stat-label {
+      font-size: .75rem; color: #6e8198; margin-top: .3rem;
+    }
+
+    /* ── FOOTER ── */
+    .flp-footer {
+      background: #fff;
+      border-top: 1px solid #dde5ef;
+      padding: .875rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: .75rem; color: #8fa8c0;
+    }
+
+    .flp-footer-links { display: flex; gap: 1.5rem; }
+    .flp-footer-links a { color: #8fa8c0; text-decoration: none; }
+    .flp-footer-links a:hover { color: #0070f2; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .flp-body { padding: 1.25rem 1rem; }
+      .flp-tile { width: calc(50% - .625rem); height: 160px; }
+      .flp-stat { min-width: calc(50% - .5rem); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class="flp-header">
+    <div class="flp-header-logo">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <span class="flp-header-title">Long Fiori Demo</span>
+    <div class="flp-header-user">
+      <span>Long Nguyen</span>
+      <div class="flp-header-avatar">LN</div>
+    </div>
+  </header>
+
+  <!-- Sub-header breadcrumb -->
+  <div class="flp-subheader">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Trang Chủ
+  </div>
+
+  <!-- Main content -->
+  <main class="flp-body">
+
+    <!-- Quick stats -->
+    <div class="flp-group">
+      <div class="flp-group-header">
+        <span class="flp-group-title">Tổng Quan</span>
+        <div class="flp-group-line"></div>
+      </div>
+      <div class="flp-stats">
+        <div class="flp-stat blue">
+          <div class="flp-stat-num">5</div>
+          <div class="flp-stat-label">Nhân Viên</div>
+        </div>
+        <div class="flp-stat green">
+          <div class="flp-stat-num">6</div>
+          <div class="flp-stat-label">Đơn Nghỉ Phép</div>
+        </div>
+        <div class="flp-stat orange">
+          <div class="flp-stat-num">5</div>
+          <div class="flp-stat-label">Vật Tư</div>
+        </div>
+        <div class="flp-stat purple">
+          <div class="flp-stat-num">2</div>
+          <div class="flp-stat-label">Phòng Ban</div>
+        </div>
+        <div class="flp-stat" style="border-color:#7b1fa2">
+          <div class="flp-stat-num">3</div>
+          <div class="flp-stat-label">Chờ Phê Duyệt</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- App tiles -->
+    <div class="flp-group">
+      <div class="flp-group-header">
+        <span class="flp-group-title">Ứng Dụng Của Tôi</span>
+        <div class="flp-group-line"></div>
+      </div>
+      <div class="flp-tiles">
+
+        <!-- Employee -->
+        <a class="flp-tile tile-emp" href="../emp/webapp/index.html">
+          <span class="flp-tile-badge">HR</span>
+          <div class="flp-tile-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <div class="flp-tile-text">
+            <div class="flp-tile-title">Quản Lý Nhân Sự</div>
+            <div class="flp-tile-sub">Employee Management</div>
+          </div>
+        </a>
+
+        <!-- Leave -->
+        <a class="flp-tile tile-leave" href="../emp/webapp/index.html#/leaverequests">
+          <span class="flp-tile-badge">Leave</span>
+          <div class="flp-tile-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
+          </div>
+          <div class="flp-tile-text">
+            <div class="flp-tile-title">Quản Lý Nghỉ Phép</div>
+            <div class="flp-tile-sub">Leave Management</div>
+          </div>
+        </a>
+
+        <!-- Material -->
+        <a class="flp-tile tile-mat" href="../mat/webapp/index.html">
+          <span class="flp-tile-badge">MM</span>
+          <div class="flp-tile-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          </div>
+          <div class="flp-tile-text">
+            <div class="flp-tile-title">Quản Lý Vật Tư</div>
+            <div class="flp-tile-sub">Material Management</div>
+          </div>
+        </a>
+
+        <!-- Approval -->
+        <a class="flp-tile tile-approval" href="../approval/webapp/index.html">
+          <span class="flp-tile-badge">Admin</span>
+          <div class="flp-tile-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="flp-tile-text">
+            <div class="flp-tile-title">Phê Duyệt</div>
+            <div class="flp-tile-sub">Approval Center</div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="flp-footer">
+    <span>© 2026 Long Fiori Demo &nbsp;·&nbsp; Powered by SAP CAP &amp; SAPUI5</span>
+    <div class="flp-footer-links">
+      <a href="../emp/webapp/index.html">Nhân Sự</a>
+      <a href="../emp/webapp/index.html#/leaverequests">Nghỉ Phép</a>
+      <a href="../mat/webapp/index.html">Vật Tư</a>
+      <a href="../approval/webapp/index.html">Phê Duyệt</a>
+    </div>
+  </footer>
+
+</body>
+</html>

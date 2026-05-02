@@ -1,0 +1,167 @@
+<!-- ============================================================
+FILE: app/webapp/view/EmployeeList.view.xml
+MỤC ĐÍCH: Trang danh sách nhân viên
+  - Toolbar với các button (Admin-only buttons ẩn với Viewer)
+  - SearchField để lọc theo tên
+  - Table hiển thị danh sách employees
+  - Navigation sang trang detail khi click vào row
+============================================================ -->
+<mvc:View
+  controllerName="com.company.employeemanagement.controller.EmployeeList"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+  xmlns:f="sap.f"
+  xmlns:semantic="sap.f.semantic">
+
+  <!-- Page: container chính với header và content -->
+  <Page
+    id="EmployeeListPage"
+    title="Danh Sách Nhân Viên"
+    showNavButton="false">
+
+    <!-- subHeader: thanh chứa SearchField -->
+    <subHeader>
+      <Bar>
+        <contentLeft>
+          <!-- SearchField: filter real-time theo firstName/lastName/email -->
+          <SearchField
+            id="searchField"
+            placeholder="Tìm kiếm theo tên, email..."
+            search=".onSearch"
+            liveChange=".onSearch"
+            width="300px" />
+        </contentLeft>
+
+        <contentRight>
+          <Button
+            text="Quản Lý Nghỉ Phép"
+            icon="sap-icon://calendar"
+            type="Transparent"
+            press=".onNavToLeaveRequests" />
+          <Button
+            text="Launchpad"
+            icon="sap-icon://home"
+            type="Transparent"
+            press=".onNavToLaunchpad" />
+        </contentRight>
+      </Bar>
+    </subHeader>
+
+    <!-- headerContent: toolbar với các action buttons -->
+    <headerContent>
+    </headerContent>
+
+    <!-- content: Table danh sách nhân viên -->
+    <content>
+      <!-- Toolbar phía trên Table -->
+      <Toolbar>
+        <Title text="Nhân Viên" />
+        <ToolbarSpacer />
+
+        <!-- Button "Generate Sample Data": Admin và Viewer đều thấy (để demo) -->
+        <Button
+          id="btnGenerateSampleData"
+          text="Tạo Dữ Liệu Mẫu"
+          icon="sap-icon://database"
+          type="Emphasized"
+          press=".onGenerateSampleData" />
+
+        <!-- Button "Thêm Nhân Viên": CHỈ Admin thấy -->
+        <!-- visible="{appView>/isAdmin}": bind với isAdmin trong appView model -->
+        <Button
+          id="btnAddEmployee"
+          text="Thêm Nhân Viên"
+          icon="sap-icon://add"
+          type="Accept"
+          visible="{appView>/isAdmin}"
+          press=".onAddEmployee" />
+      </Toolbar>
+
+      <!-- Table: hiển thị danh sách -->
+      <!-- items: bind với entity Employees từ OData -->
+      <!-- mode=SingleSelectMaster: click row để chọn (sẽ navigate) -->
+      <Table
+        id="employeeTable"
+        items="{
+          path: '/Employees',
+          parameters: {
+            $expand: 'role,department',
+            $orderby: 'lastName asc'
+          }
+        }"
+        mode="SingleSelectMaster"
+        selectionChange=".onEmployeeSelect"
+        growing="true"
+        growingThreshold="20"
+        noDataText="Không có nhân viên. Hãy nhấn 'Tạo Dữ Liệu Mẫu'!">
+
+        <!-- columns: định nghĩa các cột -->
+        <columns>
+          <Column><Text text="Họ và Tên" /></Column>
+          <Column><Text text="Chức Danh" /></Column>
+          <Column><Text text="Phòng Ban" /></Column>
+          <Column><Text text="Email" /></Column>
+          <Column><Text text="Lương" /></Column>
+          <Column><Text text="Đánh Giá" /></Column>
+          <!-- Cột Actions: CHỈ hiện với Admin -->
+          <Column visible="{appView>/isAdmin}">
+            <Text text="Thao Tác" />
+          </Column>
+        </columns>
+
+        <!-- items template: mỗi row là một ColumnListItem -->
+        <items>
+          <ColumnListItem
+            type="Navigation"
+            press=".onNavToDetail">
+
+            <cells>
+              <!-- Tên nhân viên: ghép firstName + " " + lastName -->
+              <ObjectIdentifier
+                title="{firstName} {lastName}"
+                text="{email}" />
+
+              <!-- Chức danh (từ association role) -->
+              <Text text="{role/name}" />
+
+              <!-- Phòng ban (từ association department) -->
+              <Text text="{department/name}" />
+
+              <!-- Email -->
+              <Text text="{email}" />
+
+              <!-- Lương -->
+              <ObjectNumber
+                number="{
+                  path: 'salary',
+                  type: 'sap.ui.model.type.Float',
+                  formatOptions: { groupingEnabled: true, decimals: 0 }
+                }"
+                unit="USD"
+                state="Success" />
+
+              <!-- Rating: hiển thị sao 1-5 -->
+              <RatingIndicator
+                value="{performanceRating}"
+                maxValue="5"
+                editable="false"
+                iconSize="1rem" />
+
+              <!-- Nút Delete: CHỈ Admin thấy -->
+              <Button
+                icon="sap-icon://delete"
+                type="Reject"
+                visible="{appView>/isAdmin}"
+                press=".onDeleteEmployee"
+                tooltip="Xóa nhân viên này" />
+            </cells>
+
+          </ColumnListItem>
+        </items>
+
+      </Table>
+    </content>
+
+  </Page>
+</mvc:View>

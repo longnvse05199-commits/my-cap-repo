@@ -1,0 +1,6 @@
+MaterialNumber,MaterialType,MaterialTypeText,IndustrySector,MaterialDescription,BaseUnitOfMeasure,MaterialGroup,PurchasingGroup,GrossWeight,NetWeight,WeightUnit,Plant,StorageLocation,MRPType,LotSize,ValuationClass,PriceControl,MovingAveragePrice,Currency,Status,CreatedOn,CreatedBy
+MAT-000001,ROH,Nguyên vật liệu thô,M,Thép tấm 10mm,KG,MG001,001,10.5,10.2,KG,1000,0001,PD,EX,3000,V,25000,VND,Active,2025-01-15,ADMIN
+MAT-000002,ROH,Nguyên vật liệu thô,M,Nhôm thanh 6061,KG,MG001,001,6.2,6.0,KG,1000,0001,PD,EX,3000,V,85000,VND,Active,2025-02-01,ADMIN
+MAT-000003,HALB,Bán thành phẩm,M,Bánh răng truyền động Z=32,PC,MG002,002,2.1,2.0,KG,1000,0002,PD,EX,7900,V,450000,VND,Active,2025-03-10,ADMIN
+MAT-000004,FERT,Thành phẩm,M,Máy bơm công nghiệp P-150,PC,MG003,003,45.0,42.5,KG,1000,0003,PD,EX,7920,V,12500000,VND,Active,2025-03-20,ADMIN
+MAT-000005,VERP,Bao bì đóng gói,M,Hộp carton đóng gói 30x20x15,PC,MG004,004,0.35,0.3,KG,1000,0004,ND,EX,3100,V,8500,VND,Active,2025-04-01,ADMIN

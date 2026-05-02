@@ -1,0 +1,171 @@
+<!-- ============================================================
+FILE: app/webapp/view/EmployeeDetail.view.xml
+MỤC ĐÍCH: Trang chi tiết/tạo mới nhân viên
+  - Form nhập liệu với đầy đủ fields
+  - ComboBox cho Role và Department (load từ OData)
+  - RatingIndicator cho performanceRating
+  - Salary display (read-only)
+  - Buttons: Calculate Salary (Admin), Save/Update (Admin), Back
+============================================================ -->
+<mvc:View
+  controllerName="com.company.employeemanagement.controller.EmployeeDetail"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:l="sap.ui.layout"
+  xmlns:f="sap.ui.layout.form"
+  xmlns:core="sap.ui.core">
+
+  <Page
+    id="EmployeeDetailPage"
+    title="{detailView>/pageTitle}"
+    showNavButton="true"
+    navButtonPress=".onNavBack">
+
+    <!-- Footer với các action buttons -->
+    <footer>
+      <Toolbar>
+        <ToolbarSpacer />
+
+        <!-- Button "Tính Lương": CHỈ Admin thấy, CHỈ hiện khi EDIT (không phải NEW) -->
+        <Button
+          id="btnCalculateSalary"
+          text="Tính Lương"
+          icon="sap-icon://simulate"
+          type="Emphasized"
+          visible="{= ${appView>/isAdmin} &amp;&amp; !${detailView>/isNew} }"
+          press=".onCalculateSalary" />
+
+        <!-- Button "Lưu": CHỈ Admin thấy -->
+        <Button
+          id="btnSave"
+          text="Lưu"
+          icon="sap-icon://save"
+          type="Accept"
+          visible="{appView>/isAdmin}"
+          press=".onSave" />
+
+        <!-- Button "Hủy" -->
+        <Button
+          text="Hủy"
+          icon="sap-icon://decline"
+          type="Reject"
+          press=".onNavBack" />
+      </Toolbar>
+    </footer>
+
+    <!-- Content: SimpleForm chứa tất cả fields -->
+    <content>
+      <f:SimpleForm
+        id="employeeForm"
+        editable="{appView>/isAdmin}"
+        layout="ResponsiveGridLayout"
+        title="Thông Tin Nhân Viên"
+        labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+        adjustLabelSpan="false"
+        emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0"
+        columnsXL="2" columnsL="2" columnsM="1">
+
+        <!-- ==================== CỘT 1 ==================== -->
+
+        <!-- Họ (firstName) -->
+        <Label text="Họ" required="true" />
+        <Input id="firstName" value="{firstName}" placeholder="Nguyễn" />
+
+        <!-- Tên (lastName) -->
+        <Label text="Tên" required="true" />
+        <Input id="lastName" value="{lastName}" placeholder="Văn A" />
+
+        <!-- Email -->
+        <Label text="Email" required="true" />
+        <Input
+          id="email"
+          value="{email}"
+          type="Email"
+          placeholder="email@company.com" />
+
+        <!-- Ngày sinh -->
+        <Label text="Ngày Sinh" />
+        <DatePicker
+          id="dateOfBirth"
+          value="{dateOfBirth}"
+          displayFormat="dd/MM/yyyy"
+          valueFormat="yyyy-MM-dd"
+          placeholder="dd/MM/yyyy" />
+
+        <!-- Giới tính -->
+        <Label text="Giới Tính" />
+        <Select id="gender" selectedKey="{gender}">
+          <items>
+            <core:Item key="Male"   text="Nam" />
+            <core:Item key="Female" text="Nữ" />
+            <core:Item key="Other"  text="Khác" />
+          </items>
+        </Select>
+
+        <!-- ==================== CỘT 2 ==================== -->
+
+        <!-- Ngày vào làm -->
+        <Label text="Ngày Vào Làm" required="true" />
+        <DatePicker
+          id="hireDate"
+          value="{hireDate}"
+          displayFormat="dd/MM/yyyy"
+          valueFormat="yyyy-MM-dd"
+          placeholder="dd/MM/yyyy" />
+
+        <!-- Chức danh (Role): ComboBox load từ OData /Roles -->
+        <Label text="Chức Danh" required="true" />
+        <ComboBox
+          id="role"
+          selectedKey="{role_ID}"
+          items="{
+            path: '/Roles',
+            sorter: { path: 'name' }
+          }"
+          selectionChange=".onRoleChange">
+          <items>
+            <core:ListItem key="{ID}" text="{name}" />
+          </items>
+        </ComboBox>
+
+        <!-- Phòng ban (Department): ComboBox load từ OData /Departments -->
+        <Label text="Phòng Ban" required="true" />
+        <ComboBox
+          id="department"
+          selectedKey="{department_ID}"
+          items="{
+            path: '/Departments',
+            sorter: { path: 'name' }
+          }">
+          <items>
+            <core:ListItem key="{ID}" text="{name}" />
+          </items>
+        </ComboBox>
+
+        <!-- Điểm đánh giá hiệu suất (1-5) -->
+        <Label text="Điểm Đánh Giá (1-5)" />
+        <RatingIndicator
+          id="performanceRating"
+          value="{performanceRating}"
+          maxValue="5"
+          editable="{appView>/isAdmin}"
+          change=".onRatingChange" />
+
+        <!-- Lương (read-only, được tính bởi server) -->
+        <Label text="Lương (USD)" />
+        <ObjectNumber
+          id="salary"
+          number="{
+            path: 'salary',
+            type: 'sap.ui.model.type.Float',
+            formatOptions: { groupingEnabled: true, decimals: 0 }
+          }"
+          unit="USD"
+          state="Success"
+          emphasized="true" />
+
+      </f:SimpleForm>
+    </content>
+
+  </Page>
+</mvc:View>

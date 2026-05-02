@@ -1,0 +1,28 @@
+{
+  "name": "long-fiori-demo",
+  "version": "1.0.0",
+  "description": "Long Fiori Demo - Employee & Material Management",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "cds-serve",
+    "watch": "cds watch"
+  },
+  "dependencies": {
+    "@sap/cds": "^8",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^1",
+    "@sap/cds-dk": "^8"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "[development]": { "kind": "sqlite", "credentials": { "url": ":memory:" } }
+      },
+      "auth": {
+        "[development]": { "kind": "dummy" }
+      }
+    }
+  }
+}

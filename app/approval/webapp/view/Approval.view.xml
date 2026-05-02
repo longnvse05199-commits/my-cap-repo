@@ -1,0 +1,191 @@
+<mvc:View
+  controllerName="com.company.approval.controller.Approval"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+  displayBlock="true">
+
+  <Page title="Trung Tâm Phê Duyệt" showNavButton="false">
+
+    <headerContent>
+      <Button icon="sap-icon://refresh" tooltip="Làm mới tất cả" press=".onRefreshAll" />
+      <Button text="Launchpad" icon="sap-icon://home" press=".onNavToLaunchpad" />
+    </headerContent>
+
+    <content>
+      <IconTabBar id="tabBar" stretchContentHeight="true">
+        <items>
+
+          <!-- TAB 1: NHÂN VIÊN MỚI -->
+          <IconTabFilter
+            id="tabEmployees"
+            text="Nhân Viên Mới"
+            icon="sap-icon://employee"
+            iconColor="Default"
+            count="{approvalState>/empCount}">
+
+            <Table id="empTable"
+              items="{
+                path: 'empData>/Employees',
+                parameters: {$expand: 'role,department'},
+                filters: {path: 'status', operator: 'EQ', value1: 'Pending'}
+              }"
+              noDataText="Không có nhân viên nào chờ phê duyệt."
+              growing="true" growingThreshold="20"
+              updateFinished=".onEmpUpdateFinished">
+
+              <headerToolbar>
+                <OverflowToolbar>
+                  <Title text="Nhân Viên Đang Chờ Phê Duyệt" level="H4" />
+                  <ToolbarSpacer />
+                  <Button icon="sap-icon://refresh" press=".onRefreshEmployees" />
+                </OverflowToolbar>
+              </headerToolbar>
+
+              <columns>
+                <Column width="20%"><Text text="Họ Tên" /></Column>
+                <Column width="22%"><Text text="Email" /></Column>
+                <Column width="14%"><Text text="Chức Danh" /></Column>
+                <Column width="14%"><Text text="Phòng Ban" /></Column>
+                <Column width="12%"><Text text="Ngày Vào Làm" /></Column>
+                <Column width="18%" hAlign="Center"><Text text="Thao Tác" /></Column>
+              </columns>
+
+              <items>
+                <ColumnListItem highlight="Warning">
+                  <cells>
+                    <ObjectIdentifier title="{empData>firstName} {empData>lastName}" />
+                    <Text text="{empData>email}" />
+                    <Text text="{empData>role/name}" />
+                    <Text text="{empData>department/name}" />
+                    <Text text="{empData>hireDate}" />
+                    <HBox alignItems="Center" justifyContent="Center">
+                      <Button text="Phê Duyệt" type="Accept" icon="sap-icon://accept"
+                        press=".onApproveEmployee" />
+                      <Button text="Từ Chối" type="Reject" icon="sap-icon://decline"
+                        press=".onRejectEmployee" class="sapUiTinyMarginBegin" />
+                    </HBox>
+                  </cells>
+                </ColumnListItem>
+              </items>
+            </Table>
+          </IconTabFilter>
+
+          <!-- TAB 2: ĐƠN NGHỈ PHÉP -->
+          <IconTabFilter
+            id="tabLeave"
+            text="Đơn Nghỉ Phép"
+            icon="sap-icon://calendar"
+            iconColor="Critical"
+            count="{approvalState>/leaveCount}">
+
+            <Table id="leaveTable"
+              items="{
+                path: 'empData>/LeaveRequests',
+                parameters: {$expand: 'employee'},
+                filters: {path: 'status', operator: 'EQ', value1: 'Pending'}
+              }"
+              noDataText="Không có đơn nghỉ phép nào chờ phê duyệt."
+              growing="true" growingThreshold="20"
+              updateFinished=".onLeaveUpdateFinished">
+
+              <headerToolbar>
+                <OverflowToolbar>
+                  <Title text="Đơn Nghỉ Phép Đang Chờ Phê Duyệt" level="H4" />
+                  <ToolbarSpacer />
+                  <Button icon="sap-icon://refresh" press=".onRefreshLeave" />
+                </OverflowToolbar>
+              </headerToolbar>
+
+              <columns>
+                <Column width="18%"><Text text="Nhân Viên" /></Column>
+                <Column width="22%"><Text text="Thời Gian" /></Column>
+                <Column><Text text="Lý Do" /></Column>
+                <Column width="20%" hAlign="Center"><Text text="Thao Tác" /></Column>
+              </columns>
+
+              <items>
+                <ColumnListItem highlight="Warning">
+                  <cells>
+                    <ObjectIdentifier
+                      title="{empData>employee/firstName} {empData>employee/lastName}" />
+                    <Text text="{
+                      parts: ['empData>startDate','empData>endDate'],
+                      formatter: '.formatDateRange'
+                    }" />
+                    <Text text="{empData>reason}" wrapping="true" />
+                    <HBox alignItems="Center" justifyContent="Center">
+                      <Button text="Duyệt" type="Accept" icon="sap-icon://accept"
+                        press=".onApproveLeave" />
+                      <Button text="Từ Chối" type="Reject" icon="sap-icon://decline"
+                        press=".onRejectLeave" class="sapUiTinyMarginBegin" />
+                    </HBox>
+                  </cells>
+                </ColumnListItem>
+              </items>
+            </Table>
+          </IconTabFilter>
+
+          <!-- TAB 3: VẬT TƯ MỚI -->
+          <IconTabFilter
+            id="tabMaterial"
+            text="Vật Tư Mới"
+            icon="sap-icon://factory"
+            iconColor="Negative"
+            count="{approvalState>/matCount}">
+
+            <Table id="matTable"
+              items="{
+                path: 'matData>/Materials',
+                filters: {path: 'Status', operator: 'EQ', value1: 'Pending'}
+              }"
+              noDataText="Không có vật tư nào chờ phê duyệt."
+              growing="true" growingThreshold="20"
+              updateFinished=".onMatUpdateFinished">
+
+              <headerToolbar>
+                <OverflowToolbar>
+                  <Title text="Vật Tư Đang Chờ Phê Duyệt" level="H4" />
+                  <ToolbarSpacer />
+                  <Button icon="sap-icon://refresh" press=".onRefreshMaterial" />
+                </OverflowToolbar>
+              </headerToolbar>
+
+              <columns>
+                <Column width="16%"><Text text="Số VL" /></Column>
+                <Column><Text text="Mô Tả" /></Column>
+                <Column width="14%" hAlign="Center"><Text text="Loại" /></Column>
+                <Column width="14%" hAlign="Right"><Text text="Giá (VND)" /></Column>
+                <Column width="20%" hAlign="Center"><Text text="Thao Tác" /></Column>
+              </columns>
+
+              <items>
+                <ColumnListItem highlight="Warning">
+                  <cells>
+                    <ObjectStatus text="{matData>MaterialNumber}" state="Warning" />
+                    <Text text="{matData>MaterialDescription}" />
+                    <Text text="{matData>MaterialTypeText}" />
+                    <ObjectNumber
+                      number="{
+                        path: 'matData>MovingAveragePrice',
+                        type: 'sap.ui.model.type.Float',
+                        formatOptions: { groupingEnabled: true, decimals: 0 }
+                      }"
+                      unit="{matData>Currency}" />
+                    <HBox alignItems="Center" justifyContent="Center">
+                      <Button text="Phê Duyệt" type="Accept" icon="sap-icon://accept"
+                        press=".onApproveMaterial" />
+                      <Button text="Từ Chối" type="Reject" icon="sap-icon://decline"
+                        press=".onRejectMaterial" class="sapUiTinyMarginBegin" />
+                    </HBox>
+                  </cells>
+                </ColumnListItem>
+              </items>
+            </Table>
+          </IconTabFilter>
+
+        </items>
+      </IconTabBar>
+    </content>
+  </Page>
+</mvc:View>

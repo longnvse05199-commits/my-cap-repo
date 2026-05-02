@@ -1,0 +1,46 @@
+{
+  "_version": "1.58.0",
+  "sap.app": {
+    "id": "com.company.approval",
+    "type": "application",
+    "title": "Trung Tâm Phê Duyệt",
+    "description": "Approval Center",
+    "applicationVersion": { "version": "1.0.0" },
+    "dataSources": {
+      "employeeService": {
+        "uri": "/odata/v4/employee/",
+        "type": "OData",
+        "settings": { "odataVersion": "4.0" }
+      },
+      "materialService": {
+        "uri": "/odata/v4/material/",
+        "type": "OData",
+        "settings": { "odataVersion": "4.0" }
+      }
+    }
+  },
+  "sap.ui": { "technology": "UI5", "fullWidth": true },
+  "sap.ui5": {
+    "rootView": { "viewName": "com.company.approval.view.Approval", "type": "XML", "id": "approvalView" },
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": { "sap.ui.core": {}, "sap.m": {}, "sap.ui.layout": {} }
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": { "bundleName": "com.company.approval.i18n.i18n" }
+      },
+      "empData": {
+        "dataSource": "employeeService",
+        "preload": true,
+        "settings": { "synchronizationMode": "None", "operationMode": "Server" }
+      },
+      "matData": {
+        "dataSource": "materialService",
+        "preload": true,
+        "settings": { "synchronizationMode": "None", "operationMode": "Server" }
+      }
+    }
+  }
+}

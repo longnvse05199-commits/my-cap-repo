@@ -1,0 +1,60 @@
+<mvc:View
+  controllerName="sap.mm.material.controller.CreateMaterial"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:f="sap.ui.layout.form"
+  xmlns:core="sap.ui.core">
+
+  <Page id="createMaterialPage" showNavButton="true" navButtonPress=".onNavBack"
+    title="Tạo Vật Liệu Mới">
+
+    <headerContent>
+      <Button text="Hủy" type="Reject" press=".onCancel" />
+      <Button text="Lưu" type="Accept" icon="sap-icon://save" press=".onSave" />
+    </headerContent>
+
+    <content>
+      <f:SimpleForm layout="ResponsiveGridLayout" editable="true"
+        columnsXL="2" columnsL="2" columnsM="1"
+        labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+        title="Thông Tin Vật Liệu">
+
+        <Label text="Loại Vật Liệu" required="true" />
+        <Select id="selectMaterialType" selectedKey="{newMaterial>/MaterialType}"
+          items="{dropdowns>/MaterialTypes}"
+          forceSelection="false">
+          <core:Item key="{dropdowns>Key}" text="{dropdowns>Text}" />
+        </Select>
+
+        <Label text="Mô Tả" required="true" />
+        <Input id="materialDescription" value="{newMaterial>/MaterialDescription}" />
+
+        <Label text="Đơn Vị Tính" required="true" />
+        <Select selectedKey="{newMaterial>/BaseUnitOfMeasure}"
+          items="{dropdowns>/UnitsOfMeasure}"
+          forceSelection="false">
+          <core:Item key="{dropdowns>Key}" text="{dropdowns>Text}" />
+        </Select>
+
+        <Label text="Nhóm Vật Liệu" required="true" />
+        <Input value="{newMaterial>/MaterialGroup}" />
+
+        <Label text="Nhà Máy" />
+        <Input value="{newMaterial>/Plant}" />
+
+        <Label text="Khối Lượng Đóng Gói (kg)" />
+        <Input value="{newMaterial>/GrossWeight}" type="Number" />
+
+        <Label text="Khối Lượng Ròng (kg)" />
+        <Input value="{newMaterial>/NetWeight}" type="Number" />
+
+        <Label text="Giá Trung Bình (VND)" />
+        <Input value="{newMaterial>/MovingAveragePrice}" type="Number" />
+
+        <Label text="Đơn Vị Tiền Tệ" />
+        <Input value="{newMaterial>/Currency}" />
+
+      </f:SimpleForm>
+    </content>
+  </Page>
+</mvc:View>

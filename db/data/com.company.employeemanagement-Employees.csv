@@ -1,0 +1,7 @@
+ID,firstName,lastName,dateOfBirth,gender,email,hireDate,salary,performanceRating,role_ID,department_ID,status
+a1000001-0000-0000-0000-000000000001,Alice,Nguyen,1990-03-15,Female,alice.nguyen@company.com,2020-01-10,59500,5,11111111-1111-1111-1111-111111111111,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa,Active
+b2000002-0000-0000-0000-000000000002,Bob,Tran,1985-07-22,Male,bob.tran@company.com,2018-06-01,84000,4,22222222-2222-2222-2222-222222222222,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa,Active
+c3000003-0000-0000-0000-000000000003,Carol,Le,1995-11-30,Female,carol.le@company.com,2022-09-05,46000,3,33333333-3333-3333-3333-333333333333,bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb,Active
+d4000004-0000-0000-0000-000000000004,David,Pham,1988-05-10,Male,david.pham@company.com,2019-03-20,60000,4,11111111-1111-1111-1111-111111111111,bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb,Active
+e5000005-0000-0000-0000-000000000005,Eva,Hoang,1993-08-18,Female,eva.hoang@company.com,2021-11-15,46500,2,33333333-3333-3333-3333-333333333333,aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa,Active
+f0000006-0000-0000-0000-000000000006,Minh,Tran,2001-06-15,Male,minh.tran@company.com,2026-05-01,0,3,11111111-1111-1111-1111-111111111111,bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb,Pending

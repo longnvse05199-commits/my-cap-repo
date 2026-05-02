@@ -1,0 +1,97 @@
+<mvc:View
+  controllerName="com.company.employeemanagement.controller.LeaveRequests"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core">
+
+  <Page
+    id="LeaveRequestsPage"
+    title="Quản Lý Nghỉ Phép"
+    showNavButton="true"
+    navButtonPress=".onNavBack">
+
+    <footer>
+      <Toolbar>
+        <ToolbarSpacer />
+        <Button
+          text="Tạo Đơn Nghỉ Phép"
+          icon="sap-icon://add"
+          type="Accept"
+          press=".onOpenCreateDialog" />
+        <Button
+          text="Launchpad"
+          icon="sap-icon://home"
+          press=".onNavToLaunchpad" />
+      </Toolbar>
+    </footer>
+
+    <content>
+      <Table
+        id="leaveRequestTable"
+        items="{
+          path: '/LeaveRequests',
+          parameters: {
+            $expand: 'employee',
+            $orderby: 'createdAt desc'
+          }
+        }"
+        noDataText="Chưa có đơn nghỉ phép nào.">
+
+        <columns>
+          <Column width="18%"><Text text="Nhân Viên" /></Column>
+          <Column width="14%"><Text text="Thời Gian" /></Column>
+          <Column><Text text="Lý Do" /></Column>
+          <Column width="12%" hAlign="Center"><Text text="Trạng Thái" /></Column>
+          <Column width="18%" hAlign="Center" visible="{appView>/isAdmin}">
+            <Text text="Thao Tác" />
+          </Column>
+        </columns>
+
+        <items>
+          <ColumnListItem
+            highlight="{path: 'status', formatter: '.formatStatusHighlight'}">
+            <cells>
+              <!-- Nhân viên -->
+              <ObjectIdentifier
+                title="{employee/firstName} {employee/lastName}" />
+
+              <!-- Khoảng thời gian nghỉ -->
+              <Text text="{
+                parts: ['startDate','endDate'],
+                formatter: '.formatDateRange'
+              }" />
+
+              <!-- Lý do -->
+              <Text text="{reason}" wrapping="true" />
+
+              <!-- Trạng thái với màu -->
+              <ObjectStatus
+                text="{status}"
+                state="{path: 'status', formatter: '.formatStatusState'}"
+                inverted="true" />
+
+              <!-- Nút Duyệt / Từ Chối — chỉ hiện với Admin, chỉ Pending mới có nút -->
+              <HBox visible="{appView>/isAdmin}" alignItems="Center">
+                <Button
+                  text="Duyệt"
+                  type="Accept"
+                  icon="sap-icon://accept"
+                  visible="{= ${status} === 'Pending' }"
+                  press=".onApprove" />
+                <Button
+                  text="Từ Chối"
+                  type="Reject"
+                  icon="sap-icon://decline"
+                  visible="{= ${status} === 'Pending' }"
+                  press=".onReject"
+                  class="sapUiTinyMarginBegin" />
+              </HBox>
+            </cells>
+          </ColumnListItem>
+        </items>
+
+      </Table>
+    </content>
+  </Page>
+
+</mvc:View>
